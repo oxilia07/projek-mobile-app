@@ -7,6 +7,10 @@ import FavoritesScreen from './src/screens/FavoritesScreen';
 import DetailsScreen from './src/screens/DetailsScreen';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import {firebase} from '@react-native-firebase/firestore';
+import SignInScreen from './src/screens/SignInScreen';
+import SignUpScreen from './src/screens/SignUpScreen';
+import ForgotPasswordScreen from './src/screens/ForgotPasswordScreen';
+import SplashScreen from './src/screens/SplashScreen';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -85,6 +89,21 @@ const recipes = [
 const HomeStack = () => (
   <Stack.Navigator>
     <Stack.Screen
+      name="Login"
+      component={SignInScreen}
+      options={{headerShown: false}}
+    />
+    <Stack.Screen
+      name="Register"
+      component={SignUpScreen}
+      options={{headerShown: false}}
+    />
+    <Stack.Screen
+      name="ForgotPassword"
+      component={ForgotPasswordScreen}
+      options={{headerShown: false}}
+    />
+    <Stack.Screen
       name="Home"
       component={HomeScreen}
       options={{headerShown: false}}
@@ -100,34 +119,33 @@ const HomeStack = () => (
 const App = () => {
   return (
     <NavigationContainer>
-      <Tab.Navigator
-        screenOptions={({route}) => ({
-          tabBarIcon: ({color, size}) => {
-            let iconName;
-            if (route.name === 'Home') iconName = 'home-outline';
-            else if (route.name === 'Favorites') iconName = 'heart-outline';
-            return (
-              <MaterialCommunityIcons
-                name={iconName}
-                size={size}
-                color={color}
-              />
-            );
-          },
-          tabBarActiveTintColor: '#2E7D32',
-          tabBarInactiveTintColor: 'gray',
-        })}>
-        <Tab.Screen
+      <Stack.Navigator initialRouteName="Splash">
+        <Stack.Screen
+          name="Splash"
+          component={SplashScreen}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="SignIn"
+          component={SignInScreen}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="SignUp"
+          component={SignUpScreen}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="ForgotPassword"
+          component={ForgotPasswordScreen}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
           name="Home"
-          component={HomeStack}
+          component={HomeScreen}
           options={{headerShown: false}}
         />
-        <Tab.Screen
-          name="Favorites"
-          component={FavoritesScreen}
-          options={{headerShown: false}}
-        />
-      </Tab.Navigator>
+      </Stack.Navigator>
     </NavigationContainer>
   );
 };
