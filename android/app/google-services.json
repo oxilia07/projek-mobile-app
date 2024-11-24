@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "139158546206",
+    "project_id": "tastefull-mobile",
+    "storage_bucket": "tastefull-mobile.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:139158546206:android:310a3ba68a99105f924b0f",
+        "android_client_info": {
+          "package_name": "com.tastefull"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBGoqWf-PW46q4IJosIymZoeOkZpT4JDyk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,118 +1,135 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- */
-
 import React from 'react';
-import type {PropsWithChildren} from 'react';
-import {
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
-  StyleSheet,
-  Text,
-  useColorScheme,
-  View,
-} from 'react-native';
+import {NavigationContainer} from '@react-navigation/native';
+import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+import {createStackNavigator} from '@react-navigation/stack';
+import HomeScreen from './src/screens/HomeScreen';
+import FavoritesScreen from './src/screens/FavoritesScreen';
+import DetailsScreen from './src/screens/DetailsScreen';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import {firebase} from '@react-native-firebase/firestore';
 
-import {
-  Colors,
-  DebugInstructions,
-  Header,
-  LearnMoreLinks,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
+const Tab = createBottomTabNavigator();
+const Stack = createStackNavigator();
 
-type SectionProps = PropsWithChildren<{
-  title: string;
-}>;
+const firebaseConfig = {
+  apiKey: 'AIzaSyD5KSozGchTap-dQIvMTbqFoY9CasT06eA',
+  authDomain: 'tastefull-mobile.firebaseapp.com',
+  projectId: 'tastefull-mobile',
+  storageBucket: 'tastefull-mobile.firebasestorage.app',
+  messagingSenderId: '139158546206',
+  appId: '1:139158546206:web:c4efdde76d517447924b0f',
+  measurementId: 'G-CZQ1DJBQKV',
+};
 
-function Section({children, title}: SectionProps): React.JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
+firebase.initializeApp(firebaseConfig);
+
+const writeDataToFirestore = async (collection, data) => {
+  try {
+    const ref = firebase.firestore().collection(collection).doc();
+    const response = await ref.set(data);
+    return response;
+  } catch (error) {
+    return error;
+  }
+};
+
+const recipes = [
+  {
+    image: 'https://picsum.photos/200/200',
+    title: 'Healthy Taco Salad',
+    time: '15',
+    description:
+      'This Healthy Taco Salad is the universal delight of taco night.',
+    creatorImage: 'https://picsum.photos/150/150',
+    creatorName: 'Natalia Luca',
+    creatorBio: "I'm the author and recipe developer.",
+    id: '1',
+  },
+  {
+    image: 'https://picsum.photos/200/200',
+    title: 'Vegan Chocolate Cake',
+    time: '45',
+    description: 'This Vegan Chocolate Cake is the best cake ever.',
+    creatorImage: 'https://picsum.photos/150/150',
+    creatorName: 'Natalia Luca',
+    creatorBio: "I'm the author and recipe developer.",
+    id: '2',
+  },
+  {
+    image: 'https://picsum.photos/200/200',
+    title: 'Healthy Taco Salad',
+    time: '15',
+    description:
+      'This Healthy Taco Salad is the universal delight of taco night.',
+    creatorImage: 'https://picsum.photos/150/150',
+    creatorName: 'Natalia Luca',
+    creatorBio: "I'm the author and recipe developer.",
+    id: '3',
+  },
+  {
+    image: 'https://picsum.photos/200/200',
+    title: 'Vegan Chocolate Cake',
+    time: '45',
+    description: 'This Vegan Chocolate Cake is the best cake ever.',
+    creatorImage: 'https://picsum.photos/150/150',
+    creatorName: 'Natalia Luca',
+    creatorBio: "I'm the author and recipe developer.",
+    id: '4',
+  },
+];
+
+// recipes.forEach(recipe => {
+//   writeDataToFirestore('recipes', recipe);
+// });
+
+const HomeStack = () => (
+  <Stack.Navigator>
+    <Stack.Screen
+      name="Home"
+      component={HomeScreen}
+      options={{headerShown: false}}
+    />
+    <Stack.Screen
+      name="Details"
+      component={DetailsScreen}
+      options={{headerShown: false}}
+    />
+  </Stack.Navigator>
+);
+
+const App = () => {
   return (
-    <View style={styles.sectionContainer}>
-      <Text
-        style={[
-          styles.sectionTitle,
-          {
-            color: isDarkMode ? Colors.white : Colors.black,
+    <NavigationContainer>
+      <Tab.Navigator
+        screenOptions={({route}) => ({
+          tabBarIcon: ({color, size}) => {
+            let iconName;
+            if (route.name === 'Home') iconName = 'home-outline';
+            else if (route.name === 'Favorites') iconName = 'heart-outline';
+            return (
+              <MaterialCommunityIcons
+                name={iconName}
+                size={size}
+                color={color}
+              />
+            );
           },
-        ]}>
-        {title}
-      </Text>
-      <Text
-        style={[
-          styles.sectionDescription,
-          {
-            color: isDarkMode ? Colors.light : Colors.dark,
-          },
-        ]}>
-        {children}
-      </Text>
-    </View>
+          tabBarActiveTintColor: '#2E7D32',
+          tabBarInactiveTintColor: 'gray',
+        })}>
+        <Tab.Screen
+          name="Home"
+          component={HomeStack}
+          options={{headerShown: false}}
+        />
+        <Tab.Screen
+          name="Favorites"
+          component={FavoritesScreen}
+          options={{headerShown: false}}
+        />
+      </Tab.Navigator>
+    </NavigationContainer>
   );
-}
-
-function App(): React.JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
-
-  const backgroundStyle = {
-    backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
-  };
-
-  return (
-    <SafeAreaView style={backgroundStyle}>
-      <StatusBar
-        barStyle={isDarkMode ? 'light-content' : 'dark-content'}
-        backgroundColor={backgroundStyle.backgroundColor}
-      />
-      <ScrollView
-        contentInsetAdjustmentBehavior="automatic"
-        style={backgroundStyle}>
-        <Header />
-        <View
-          style={{
-            backgroundColor: isDarkMode ? Colors.black : Colors.white,
-          }}>
-          <Section title="Step One">
-            Edit <Text style={styles.highlight}>App.tsx</Text> to change this
-            screen and then come back to see your edits.
-          </Section>
-          <Section title="See Your Changes">
-            <ReloadInstructions />
-          </Section>
-          <Section title="Debug">
-            <DebugInstructions />
-          </Section>
-          <Section title="Learn More">
-            Read the docs to discover what to do next:
-          </Section>
-          <LearnMoreLinks />
-        </View>
-      </ScrollView>
-    </SafeAreaView>
-  );
-}
-
-const styles = StyleSheet.create({
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
-  },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: '600',
-  },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: '400',
-  },
-  highlight: {
-    fontWeight: '700',
-  },
-});
+};
 
 export default App;
