@@ -37,7 +37,13 @@ const SignInScreen = ({navigation}: any) => {
           Forgot your password?
         </Text>
       </View>
-      <Button title="Login" color="#4CAF50" onPress={() => {}} />
+      <Button
+        title="Login"
+        color="#4CAF50"
+        onPress={() => {
+          navigation.navigate('Home');
+        }}
+      />
       <TouchableOpacity
         style={styles.newAccount}
         onPress={() => navigation.navigate('SignUp')}>

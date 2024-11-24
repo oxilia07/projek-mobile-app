@@ -1,8 +1,14 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {View, Text, Image, StyleSheet} from 'react-native';
 import logo from '../assets/logo.png';
 
-const SplashScreen = () => {
+const SplashScreen = ({navigation}: any) => {
+  useEffect(() => {
+    setTimeout(() => {
+      navigation.navigate('SignIn');
+    }, 2000); // 2 seconds delay
+  }, [navigation]);
+
   return (
     <View style={styles.container}>
       <Image source={logo} style={styles.logo} />
